@@ -82,19 +82,3 @@ npm run dev
 # Frontend
 cd ../frontend
 npm run dev
-
-
-
-
-📄 License
-MIT © 2025 EpicTech AI
-
-
----
-
-✅ **Action:**  
-Create a file named `README.md` in the root of your GitHub repo and paste the content above.
-
-When you're ready, reply with:  
-**✅ Confirmed**  
-And I will give you the next file: `LICENSE`.
