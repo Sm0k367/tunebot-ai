@@ -1,0 +1,28 @@
+{
+  "name": "tunebot-backend",
+  "version": "1.0.0",
+  "description": "Backend for TuneBot - AI Music Generation Platform",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "EpicTech AI",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.6.1",
+    "pg": "^8.11.1",
+    "redis": "^4.6.7",
+    "stripe": "^12.14.0",
+    "jsonwebtoken": "^9.0.2",
+    "bcrypt": "^5.1.1",
+    "openai": "^4.26.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
