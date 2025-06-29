@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuneBot - AI Music Generation Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chat-section, .music-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-container {
+            height: 400px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            background: #f8fafc;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .send-btn, .generate-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .send-btn:hover, .generate-btn:hover {
+            background: #5a67d8;
+        }
+
+        .music-player {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .waveform {
+            height: 100px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 5px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .control-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #2d3748;
+        }
+
+        .features-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .pricing-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .pricing-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea10, #764ba210);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 15px 0;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+        }
+
+        .cta-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin: 10px;
+        }
+
+        .cta-btn:hover {
+            background: #38a169;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎵 TuneBot</h1>
+            <p>AI-Powered Music Generation Through Conversation</p>
+        </header>
+
+        <div class="main-content">
+            <div class="chat-section">
+                <h2 class="section-title">💬 Chat with TuneBot</h2>
+                <div class="chat-container">
+                    <div class="message bot-message">
+                        Hi! I'm TuneBot 🎵 Tell me what kind of music you'd like me to create. Describe the mood, genre, instruments, or even the story you want the music to tell!
+                    </div>
+                    <div class="message user-message">
+                        I need upbeat electronic music for my workout playlist. Something with heavy bass and energetic beats.
+                    </div>
+                    <div class="message bot-message">
+                        Perfect! I'll create an energetic electronic track with:
+                        • Heavy bass drops
+                        • 128 BPM tempo
+                        • Synth leads
+                        • Driving percussion
+                        
+                        Would you like me to add any specific elements like vocal chops or a breakdown section?
+                    </div>
+                    <div class="message user-message">
+                        Yes, add some vocal chops and a epic breakdown at 1:30!
+                    </div>
+                    <div class="message bot-message">
+                        Excellent! Generating your custom workout track now... 🎧
+                    </div>
+                </div>
+                <div class="input-container">
+                    <input type="text" class="chat-input" placeholder="Describe your music idea...">
+                    <button class="send-btn">Send</button>
+                </div>
+            </div>
+
+            <div class="music-section">
+                <h2 class="section-title">🎧 Generated Music</h2>
+                <div class="music-player">
+                    <h3>Workout Beast Mode</h3>
+                    <p>Electronic • 128 BPM • 3:24</p>
+                    <div class="waveform">
+                        🎵 Audio Waveform Visualization 🎵
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn">⏮</button>
+                        <button class="control-btn">▶️</button>
+                        <button class="control-btn">⏭</button>
+                        <button class="control-btn">💾</button>
+                    </div>
+                </div>
+                <button class="generate-btn">🎵 Generate New Track</button>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2 class="section-title">✨ Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Conversation</h3>
+                    <p>Describe your music in natural language and let our AI understand your vision</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎼</div>
+                    <h3>Custom Generation</h3>
+                    <p>Create unique tracks tailored to your specific needs and preferences</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Results</h3>
+                    <p>Generate professional-quality music in seconds, not hours</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Multiple Formats</h3>
+                    <p>Export in MP3, WAV, FLAC and more for any platform or use case</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Iterative Refinement</h3>
+                    <p>Chat to refine and perfect your tracks until they're exactly right</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Cross-Platform</h3>
+                    <p>Access TuneBot from web, mobile, or integrate via our API</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-section">
+            <h2 class="section-title">💰 Pricing Plans</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Free</h3>
+                    <div class="price">$0</div>
+                    <p>Perfect for trying out TuneBot</p>
+                    <ul style="text-align: left; margin: 20px 0;">
+                        <li>5 tracks per month</li>
+                        <li>Basic chat features</li>
+                        <li>MP3 export only</li>
+                        <li>Community support</li>
+                    </ul>
+                    <button class="cta-btn">Get Started Free</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Pro</h3>
+                    <div class="price">$19<span style="font-size: 1rem;">/month</span></div>
+                    <p>For content creators and professionals</p>
+                    <ul style="text-align: left; margin: 20px 0;">
+                        <li>Unlimited tracks</li>
+                        <li>Advanced AI features</li>
+                        <li>All export formats</li>
+                        <li>Commercial license</li>
+                        <li>Priority support</li>
+                        <li>Collaboration tools</li>
+                    </ul>
+                    <button class="cta-btn">Start Pro Trial</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">$99<span style="font-size: 1rem;">/month</span></div>
+                    <p>For teams and businesses</p>
+                    <ul style="text-align: left; margin: 20px 0;">
+                        <li>Everything in Pro</li>
+                        <li>API access</li>
+                        <li>White-label options</li>
+                        <li>Custom integrations</li>
+                        <li>Dedicated support</li>
+                        <li>Team management</li>
+                    </ul>
+                    <button class="cta-btn">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Create Amazing Music?</h2>
+            <p>Join thousands of creators using TuneBot to bring their musical ideas to life</p>
+            <button class="cta-btn">Start Creating Now</button>
+            <button class="cta-btn" style="background: transparent; border: 2px solid white;">Watch Demo</button>
+        </div>
+    </div>
+
+    <script>
+        // Simple demo interactions
+        document.querySelector('.chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const message = this.value.trim();
+                if (message) {
+                    addMessage(message, 'user');
+                    this.value = '';
+                    
+                    // Simulate bot response
+                    setTimeout(() => {
+                        addMessage("Great idea! I'll create that for you. Generating your custom track now... 🎵", 'bot');
+                    }, 1000);
+                }
+            }
+        });
+
+        document.querySelector('.send-btn').addEventListener('click', function() {
+            const input = document.querySelector('.chat-input');
+            const message = input.value.trim();
+            if (message) {
+                addMessage(message, 'user');
+                input.value = '';
+                
+                setTimeout(() => {
+                    addMessage("Great idea! I'll create that for you. Generating your custom track now... 🎵", 'bot');
+                }, 1000);
+            }
+        });
+
+        function addMessage(text, type) {
+            const chatContainer = document.querySelector('.chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.textContent = text;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Demo play button
+        document.querySelector('.control-btn').addEventListener('click', function() {
+            if (this.textContent === '▶️') {
+                this.textContent = '⏸️';
+                document.querySelector('.waveform').style.animation = 'pulse 1s infinite';
+            } else {
+                this.textContent = '▶️';
+                document.querySelector('.waveform').style.animation = 'none';
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</body>
+</html>
