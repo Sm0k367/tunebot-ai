@@ -42,3 +42,59 @@ TuneBot is an innovative micro SaaS that combines conversational AI with music g
 ```bash
 git clone https://github.com/Sm0k367/tunebot-ai.git
 cd tunebot-ai
+
+
+
+
+2. Install Dependencies
+bash
+
+
+# Frontend
+cd frontend
+npm install
+
+# Backend
+cd ../backend
+npm install
+
+
+
+
+3. Configure Environment
+bash
+
+
+cp frontend/.env.example frontend/.env
+cp backend/.env.example backend/.env
+
+
+
+
+4. Run Locally
+bash
+
+
+# Backend
+cd backend
+npm run dev
+
+# Frontend
+cd ../frontend
+npm run dev
+
+
+
+
+📄 License
+MIT © 2025 EpicTech AI
+
+
+---
+
+✅ **Action:**  
+Create a file named `README.md` in the root of your GitHub repo and paste the content above.
+
+When you're ready, reply with:  
+**✅ Confirmed**  
+And I will give you the next file: `LICENSE`.
