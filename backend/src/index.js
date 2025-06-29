@@ -1,9 +1,14 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const { pgPool } = require('../config/db')
 const mongoose = require('mongoose')
-const { Pool } = require('pg')
 const redis = require('redis')
+
+const authRoutes = require('./routes/auth')
+const chatRoutes = require('./routes/chat')
+const musicRoutes = require('./routes/music')
+const stripeRoutes = require('./routes/stripe')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -12,31 +17,20 @@ const PORT = process.env.PORT || 3001
 app.use(cors())
 app.use(express.json())
 
-// PostgreSQL
-const pgPool = new Pool({
-  connectionString: process.env.DATABASE_URL
-})
-
-// MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB error:', err))
-
 // Redis
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL
-})
-redisClient.connect().then(() => console.log('Redis connected'))
+const redisClient = redis.createClient({ url: process.env.REDIS_URL })
+redisClient.connect().then(() => console.log('✅ Redis connected')).catch(console.error)
 
 // Routes
 app.get('/', (req, res) => {
   res.send('🎵 TuneBot API is running')
 })
+app.use('/api/auth', authRoutes)
+app.use('/api/chat', chatRoutes)
+app.use('/api/music', musicRoutes)
+app.use('/api/stripe', stripeRoutes)
 
-// TODO: Add route imports here (auth, chat, music, stripe)
-
+// Start Server
 app.listen(PORT, () => {
-  console.log(`🚀 TuneBot backend running on http://localhost:${PORT}`)
+  console.log(`🚀 TuneBot backend running at http://localhost:${PORT}`)
 })
