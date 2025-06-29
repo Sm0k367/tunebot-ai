@@ -1,0 +1,27 @@
+{
+  "name": "tunebot-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend for TuneBot - AI Music Generation Platform",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@stripe/stripe-js": "^1.62.0",
+    "axios": "^1.6.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.23.0",
+    "waveform-react": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.2.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.8"
+  }
+}
